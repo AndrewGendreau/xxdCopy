@@ -1,0 +1,123 @@
+NAME: Andrew Gendreau
+DATE: April 20th, 2016
+VERSION: 1.0
+FILENAME: documentation
+
+DESCRIPTION:
+myxxd is a program that emulates the xxd function with at least 3 options supported.
+myxxd will perform a hexdump of the given file or input from stdin if no file is given.
+It will print the results to either a given file or to stdout if no outfile is given.
+It will prepend a hex line number before each line, this line number will be incremented 
+by the number of lines read (default 16) and will append the ascii version of the read line.
+
+HOW TO RUN WITH OPTIONS:
+After unpacking, and compiling, enter run the command with the following form:
+	./myxxd [options] [infile [outfile]]
+
+The following options are supported:
+
+  -c cols || -cols where cols is the number of octets printed per line.
+
+  -l len  || -l <len> is the number of octets to print in total, after writing len octets myxxd will stop.
+
+   -b     || -bits This will switch to binary dump mode and print the octets in binary form in place of hex. 
+		It prepend a hex line number before each line and append the acii version of that line.
+
+Any combination of the above options are supported or no options and an input file
+   
+ALGORITHM:
+
+Input: options infile outfile
+Output: Hex or binary dump of the file.
+Procedure:
+	parse options
+	if option[i] is supported, set the flag for it and any other required information
+	
+	parse infile
+	if infile exists, open it for reading.
+	if infile does not exist, prompt the user and terminate
+
+	parse outfile
+	if outfile is not specified, set the flag representing this
+	otherwise, if outfile exists, open it for writing
+	if outfile does not exist, create it.
+
+	if the flag for binary mode is set, check the other flags and perform the corresponding binary dump
+
+	if not,
+	check the other flags and perform the corresponding hex dump
+
+ANALYSIS:
+myxxd will work if given an input file, a texfile containing the following was used as a test:
+
+test.txt:
+fjkfvjkgbnbntdgbgtedger5gtvvbhygvfbnvfbnytvrtrewrg5n3kjlgn4iofwefjp4iow3jgre
+giw4ggggggggperjgfpwijkoij4wejhpfgtoij4oi3f4p3wjgvpfoewv
+fejoipjpo43wjgpoi34gjiop35jopi5iop35jhopi54jhopi53h54jh5poi4jjviprewjvewr
+fjewriopgvjerpoigjieropgjopiewrjgbvreopigvjpeowrijgvopiergjioeprjgoipewrjgv
+vgropegvjrewopjgpioewrjgbiperjgpoewrjgpoewrijgpoiewrjgopewrijgrewiopjgeop
+
+The following commands were run:
+
+./myxxd test.txt
+Which produced the following output:
+0000000: 666a 6b66 766a 6b67 626e 626e 7464 6762 fjkfvjkgbnbntdgb
+0000010: 6774 6564 6765 7235 6774 7676 6268 7967 gtedger5gtvvbhyg
+0000020: 7666 626e 7666 626e 7974 7672 7472 6577 vfbnvfbnytvrtrew
+0000030: 7267 356e 336b 6a6c 676e 3469 6f66 7765 rg5n3kjlgn4iofwe
+0000040: 666a 7034 696f 7733 6a67 7265 0a67 6977 fjp4iow3jgre.giw
+0000050: 3467 6767 6767 6767 6770 6572 6a67 6670 4ggggggggperjgfp
+0000060: 7769 6a6b 6f69 6a34 7765 6a68 7066 6774 wijkoij4wejhpfgt
+0000070: 6f69 6a34 6f69 3366 3470 3377 6a67 7670 oij4oi3f4p3wjgvp
+0000080: 666f 6577 760a 6665 6a6f 6970 6a70 6f34 foewv.fejoipjpo4
+0000090: 3377 6a67 706f 6933 3467 6a69 6f70 3335 3wjgpoi34gjiop35
+00000A0: 6a6f 7069 3569 6f70 3335 6a68 6f70 6935 jopi5iop35jhopi5
+00000B0: 346a 686f 7069 3533 6835 346a 6835 706f 4jhopi53h54jh5po
+00000C0: 6934 6a6a 7669 7072 6577 6a76 6577 720a i4jjviprewjvewr.
+00000D0: 666a 6577 7269 6f70 6776 6a65 7270 6f69 fjewriopgvjerpoi
+00000E0: 676a 6965 726f 7067 6a6f 7069 6577 726a gjieropgjopiewrj
+00000F0: 6762 7672 656f 7069 6776 6a70 656f 7772 gbvreopigvjpeowr
+0000100: 696a 6776 6f70 6965 7267 6a69 6f65 7072 ijgvopiergjioepr
+0000110: 6a67 6f69 7065 7772 6a67 760a 7667 726f jgoipewrjgv.vgro
+0000120: 7065 6776 6a72 6577 6f70 6a67 7069 6f65 pegvjrewopjgpioe
+0000130: 7772 6a67 6269 7065 726a 6770 6f65 7772 wrjgbiperjgpoewr
+0000140: 6a67 706f 6577 7269 6a67 706f 6965 7772 jgpoewrijgpoiewr
+0000150: 6a67 6f70 6577 7269 6a67 7265 7769 6f70 jgopewrijgrewiop
+0000160: 6a67 656f 700a  jgeop.
+
+./myxxd -c 20 test.txt
+which produced the following output:
+0000000: 666a 6b66 766a 6b67 626e 626e 7464 6762 6774 6564 fjkfvjkgbnbntdgbgted
+0000014: 6765 7235 6774 7676 6268 7967 7666 626e 7666 626e ger5gtvvbhygvfbnvfbn
+0000028: 7974 7672 7472 6577 7267 356e 336b 6a6c 676e 3469 ytvrtrewrg5n3kjlgn4i
+000003C: 6f66 7765 666a 7034 696f 7733 6a67 7265 0a67 6977 ofwefjp4iow3jgre.giw
+0000050: 3467 6767 6767 6767 6770 6572 6a67 6670 7769 6a6b 4ggggggggperjgfpwijk
+0000064: 6f69 6a34 7765 6a68 7066 6774 6f69 6a34 6f69 3366 oij4wejhpfgtoij4oi3f
+0000078: 3470 3377 6a67 7670 666f 6577 760a 6665 6a6f 6970 4p3wjgvpfoewv.fejoip
+000008C: 6a70 6f34 3377 6a67 706f 6933 3467 6a69 6f70 3335 jpo43wjgpoi34gjiop35
+00000A0: 6a6f 7069 3569 6f70 3335 6a68 6f70 6935 346a 686f jopi5iop35jhopi54jho
+00000B4: 7069 3533 6835 346a 6835 706f 6934 6a6a 7669 7072 pi53h54jh5poi4jjvipr
+00000C8: 6577 6a76 6577 720a 666a 6577 7269 6f70 6776 6a65 ewjvewr.fjewriopgvje
+00000DC: 7270 6f69 676a 6965 726f 7067 6a6f 7069 6577 726a rpoigjieropgjopiewrj
+00000F0: 6762 7672 656f 7069 6776 6a70 656f 7772 696a 6776 gbvreopigvjpeowrijgv
+0000104: 6f70 6965 7267 6a69 6f65 7072 6a67 6f69 7065 7772 opiergjioeprjgoipewr
+0000118: 6a67 760a 7667 726f 7065 6776 6a72 6577 6f70 6a67 jgv.vgropegvjrewopjg
+000012C: 7069 6f65 7772 6a67 6269 7065 726a 6770 6f65 7772 pioewrjgbiperjgpoewr
+0000140: 6a67 706f 6577 7269 6a67 706f 6965 7772 6a67 6f70 jgpoewrijgpoiewrjgop
+0000154: 6577 7269 6a67 7265 7769 6f70 6a67 656f 700a  ewrijgrewiopjgeop.
+
+./myxxd -l 20 test.txt
+which produced the following output:
+0000000: 666a 6b66 766a 6b67 626e 626e 7464 6762 fjkfvjkgbnbntdgb
+0000010: 6774 6564 6765 7235 6774 7676 6268 7967 gtedger5gtvvbhyg
+
+./myxxd -l 20 -c 10 test.txt 
+which produced the following output:
+0000000: 666a 6b66 766a 6b67 626e fjkfvjkgbn
+000000A: 626e 7464 6762 6774 6564 bntdgbgted
+
+./myxxd -l 20 -c 10 nonexistant
+which produced the following output:
+Non-Existant input file! Terminating..
+
+These tests seem to show myxxd does work, given that it has an input file.

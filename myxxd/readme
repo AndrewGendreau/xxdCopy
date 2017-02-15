@@ -1,0 +1,42 @@
+NAME: Andrew Gendreau
+DATE: April 20th 2016
+VERSION: 1.0
+FILENAME: readme
+
+DESCRIPTION:
+myxxd is a program to emulate the function of xxd with 3 options.
+
+LANGUAGE:
+C programming language with ANSI standard libraries supported.
+
+SHELl:
+Uses the bash shell.
+
+FILES INCLUDED:
+binary.c  binary.h  documentation  fileReader.c  fileReader.h  hexdump.c  hexdump.h  makefile  myxxd.c	readme script
+
+HOW TO COMPILE:
+Unzip s16csc520p2_gendreau.tar.gz
+Once unzipped enter the myxxd directory
+Use make to create the executable 
+
+CLEAN:
+Enter make clean
+
+USAGE INSTRUCTIONS:
+Once compiled, enter the input as follows:
+./myxxd [options] [infile [outfile]]
+
+The following options are supported:
+
+  -c cols || -cols where cols is the number of octets printed per line.
+
+  -l len  || -l <len> is the number of octets to print in total, after writing len octets myxxd will stop.
+
+   -b     || -bits This will switch to binary dump mode and print the octets in binary form in place of hex. 
+		It prepend a hex line number before each line and append the acii version of that line.
+
+KNOWN BUGS:
+1. myxxd will only work with pre-given input files for now, it cannot do input from stdin.
+2. myxxd does not format the final line like xxd does, if all the lines are not of equal length, the final line
+will be smaller than the rest.
